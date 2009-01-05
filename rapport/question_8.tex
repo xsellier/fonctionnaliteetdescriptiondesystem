@@ -1,3 +1,12 @@
 
 \section{Question 8}
 
+Entre les lignes 8 et 12, notre algorithme s\'electionne chacune des couleurs disponibles pour une position donn\'ee. Elle fait appel \`a Sudoku, par cons\'equent, chacune de ces grilles ont une seule couleur qui diff\`ere. Tout ce qui fera qu'on n'affiche qu'une seule fois chaque solution c'est notre choix d'impl\'ementation de la ligne 8. Un grand point a consacrer a cet algorithme est de ne pas rechoisir une m\^eme case (de toute mani\`ere cela serait impossible), mais il serait bon de ne choisir que les cases qui ne poss\`edent que peu de couleurs possibles. Intuitivement cela devrait diminuer notre risque d'erreur et donc de calculs inutiles de grilles qui ne sont pas corrects.
+
+A chaque passage entre les lignes 8 \`a 12, on choisi une grille diff\'erente, par cons\'equent m\^eme si toutes les grilles sont choisies (ce qui est tr\`es improbable), il n'y aura qu'un et un seul affichage de chaque grille, d'une part parce qu'elles sont toutes diff\'erentes et d'autre part car il n'y a pas de modification entre le test de la grille (savoir si elle est correcte), et le moment ou on l'affiche.
+
+\bigskip
+Etant donn\'e que nous faisons une \'etude exhaustive de tous les choix possibles, l'algorithme trouvera forc\'ement tous les choix possibles.
+
+\bigskip
+Une grille de sudoku a une taille finie, et un nombre de couleur fini, par cons\'equent, m\^eme si cela doit durer, notre algorithme fait une \'etude exhaustive de tous les cas possibles pour une grille pr\'eremplie (en supprimant des possibilit\'es incorrectes). L'algorithme ne revient pas en arri\`ere, et ne devra pas r\'eeffectuer des choix sur des cases ou tous les choix ont \'et\'e d\'ej\`a ex\'ecut\'e.
