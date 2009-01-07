@@ -1,5 +1,5 @@
 CIBLES = sudoku
-SRCS = sudoku.c
+SRCS = sudoku.c sudoku.h
 LIBS =
 
 PREFIX = /usr

@@ -1,13 +1,6 @@
 #include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <stdint.h>
-#include <ctype.h>
-
-int nb_color = 0;
-int grid_size = 10;
-uint16_t *grid;
-
+#include "sudoku.h"
+#include "ordonnanceur.h"
 
 void
 fill_grid(uint16_t color, uint16_t* tmp_grid, int position)
@@ -36,6 +29,7 @@ print_grid(uint16_t *grid)
       if((i+1)%nb_color==0 && i!=0)
 	printf("\n");
     }
+  printf("nombre de couleurs : %d\n",nb_color);
 }
 
 void
@@ -89,8 +83,6 @@ main(int argc, char **argv)
   parsing(argv[1]);
 
   print_grid(grid);
-
-  printf("nombre de couleurs : %d\n",nb_color);
 
   return EXIT_SUCCESS;
 }
