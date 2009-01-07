@@ -1,5 +1,5 @@
 CIBLES = sudoku
-SRCS = sudoku.c sudoku.h
+SRCS = sudoku.c sudoku.h ordonnanceur.c ordonnanceur.h
 LIBS =
 
 PREFIX = /usr
@@ -33,3 +33,4 @@ dep:
 	gcc $(CPPFLAGS) -MM $(SRCS)
 
 sudoku.o: sudoku.c
+ordonnanceur.o: sudoku.o ordonnanceur.c
