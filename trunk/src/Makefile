@@ -1,6 +1,6 @@
 CIBLES = sudoku
 SRCS = sudoku.c sudoku.h ordonnanceur.c ordonnanceur.h
-LIBS =
+LIBS = -lpthread
 
 PREFIX = /usr
 
@@ -13,9 +13,9 @@ CC = gcc
 
 CFLAGS = -Wall -pedantic -g
 
-CPPFLAGS =  -I$(INCDIR) 
+CPPFLAGS =  -I$(INCDIR)
 
-LDFLAGS = -lm -D_REENTRANT
+LDFLAGS = -lm -pthread
 LDLIBS = -L$(LIBDIR) $(LIBS)  
 
 $(CIBLES): $(OBJS)
@@ -32,5 +32,5 @@ clean:
 dep:
 	gcc $(CPPFLAGS) -MM $(SRCS)
 
-sudoku.o: sudoku.c
-ordonnanceur.o: sudoku.o ordonnanceur.c
+sudoku.o: sudoku.c ordonnanceur.c sudoku.h ordonnanceur.h
+ordonnanceur.o: sudoku.o ordonnanceur.c ordonnanceur.h

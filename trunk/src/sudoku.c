@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "sudoku.h"
-#include "ordonnanceur.h"
 
 void
 fill_grid(uint16_t color, uint16_t* tmp_grid, int position)
