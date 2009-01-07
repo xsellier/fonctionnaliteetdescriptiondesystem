@@ -14,7 +14,7 @@ void
 fill_grid(uint16_t color, uint16_t* tmp_grid, int position);
 
 void
-  print_grid(uint16_t *grid);
+print_grid(uint16_t *grid);
 
 void
 grid_cpy(uint16_t* tmp_grid);
