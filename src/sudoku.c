@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include "sudoku.h"
 
 void
@@ -12,7 +11,7 @@ fill_grid(uint16_t color, uint16_t* tmp_grid, int position)
     {
       if(color=='_')
 	{
-	  *(tmp_grid+position)= -1;
+	  *(tmp_grid+position)= 0xFF;
 	}
     }
 }
@@ -81,6 +80,12 @@ main(int argc, char **argv)
 { 
   parsing(argv[1]);
 
+  print_grid(grid);
+
+  printf("La grille est valide %d\n",grid_check());
+  
+  ordonnanceur();
+  
   print_grid(grid);
 
   return EXIT_SUCCESS;
