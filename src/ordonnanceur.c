@@ -139,52 +139,44 @@ grid_check()
 void
 ordonnanceur()
 {
-  int quantum = 4;
   int i;
- 
-  pthread_t* thread=malloc(nb_color * sizeof(pthread_t));
-  
+  pthread_t* thread = malloc(nb_color*sizeof(pthread_t));
   pthread_t tmp;
+  pthread_attr_t new_attr;
+  pthread_mutex_t verrou;
 
   assert(grid_check());
-  Init(&My_stack);
   
-  for(i=0;i<nb_color*nb_color;++i)
+  pthread_attr_init(&new_attr);
+  pthread_attr_setschedpolicy(&new_attr,SCHED_RR);
+
+  Init(&My_stack);
+
+  pthread_mutex_init(&verrou,NULL);
+  
+  for(i=0;i<nb_color;++i)
       PushBack(&My_stack,thread[i]);
-
-  tmp = PopFront(&My_stack);
-  while(tmp!=-1)
+  
+  while(is_change!=0)
     {
-      pthread_create (&tmp, NULL,max_solver, NULL);
+      tmp=PopFront(&My_stack);
 
-      if(is_change!=0)
-	PushBack(&My_stack,tmp);
+      /*      pthread_mutex_lock (&verrou);      */
+      pthread_create (&tmp, &new_attr,max_solver, NULL);
 
       pthread_join(tmp, NULL);
+      /*      pthread_mutex_unlock (&verrou);*/
 
-
-      tmp = PopFront(&My_stack);
-      position++;
+      PushBack(&My_stack,tmp);
       
-      while (grid[position]!=0xFF)
-	{
-	  position++;
-	  position = position % (nb_color * nb_color);
-	  if(position == 0)
-	    {
-	    if(quantum == 0)
-	      break;
-	    else
-	      quantum = 0;
-	    }
-	}
     }
+  
 }
- 
- 
+
 void* max_solver(void* test)
 {
   uint16_t d = sqrt(nb_color);
+  uint16_t position = 0;
   uint16_t tmp_pos;
   uint16_t tmp;
   int nb_available = 0;
@@ -193,61 +185,64 @@ void* max_solver(void* test)
 
   is_change=0;
   
-  for(i=0x00;i<nb_color;++i)
-    c_available[i]=0x01;
-  
-  if(grid[position]!=0xFF && (nb_color-1) * nb_color )
-    return test;
-  
-  /* filling columns */
-  tmp_pos = position % nb_color;
-  for(; tmp_pos < nb_color * nb_color; tmp_pos = tmp_pos+nb_color)
+  for(position = 0; position < (nb_color-1) * (nb_color); ++position)
     {
-      if(grid[tmp_pos]!= 0xFF)
-	c_available[(grid[tmp_pos]-48)]=0;
-	  
-    }
-  
+
+      for(i=0x00;i<nb_color;++i)
+        c_available[i]=0x01;
+     
+      while(grid[position]!=0xFF && (nb_color-1) * nb_color )
+          position++;
+
+      /* filling columns */
+      tmp_pos = position % nb_color;
+      for(; tmp_pos < nb_color * nb_color; tmp_pos = tmp_pos+nb_color)
+        {
+          if(grid[tmp_pos]!= 0xFF)
+              c_available[(grid[tmp_pos]-48)]=0;
+         
+        }
+     
       /* filling line */
-  tmp_pos = position;
-  while(tmp_pos%nb_color!=0)
-    tmp_pos--;
-  tmp = tmp_pos;
-  for(; tmp_pos < tmp + nb_color; ++tmp_pos)
-    {
-      if(grid[tmp_pos]!= 0xFF)
-	c_available[(grid[tmp_pos]-48)]=0;
-    }
-  
-  /* filling blocks */
-  tmp_pos = position;
-  while(tmp_pos%d!=0)
-    tmp_pos--;
-  do 
-    {
-      if(grid[tmp_pos]!= 0xFF)
-	c_available[(grid[tmp_pos]-48)]=0;
-	  
-      ++tmp_pos;
-      if(tmp_pos % d == 0)
-	tmp_pos = tmp_pos + nb_color - d;
-    } while (tmp_pos < d * nb_color);
-  
-  /* filling grid */
-  nb_available = 0;
-  for(i=0x00;i<nb_color;++i)
-    {
-      if(c_available[i]==1)
-	{
-	  tmp = i;
-	  nb_available++;
-	}
-    }
-  if(nb_available==1)
-    {
-      is_change=1;  
-      grid[position]=(tmp+48);
+      tmp_pos = position;
+      while(tmp_pos%nb_color!=0)
+        tmp_pos--;
+      tmp = tmp_pos;
+      for(; tmp_pos < tmp + nb_color; ++tmp_pos)
+        {
+          if(grid[tmp_pos]!= 0xFF)
+              c_available[(grid[tmp_pos]-48)]=0;
+        }
+     
+      /* filling blocks */
+      tmp_pos = position;
+      while(tmp_pos%d!=0)
+        tmp_pos--;
+      do
+        {
+          if(grid[tmp_pos]!= 0xFF)
+              c_available[(grid[tmp_pos]-48)]=0;
+     
+          ++tmp_pos;
+          if(tmp_pos % d == 0)
+            tmp_pos = tmp_pos + nb_color - d;
+        } while (tmp_pos < d * nb_color);
+     
+      /* filling grid */
+      nb_available = 0;
+      for(i=0x00;i<nb_color;++i)
+        {
+          if(c_available[i]==1)
+            {
+              tmp = i;
+              nb_available++;
+            }
+        }
+      if(nb_available==1)
+        {
+          is_change=1;  
+          grid[position]=(tmp+48);
+        }
     }
   return test;
 }
-
