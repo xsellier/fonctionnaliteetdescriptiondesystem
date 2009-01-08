@@ -96,11 +96,13 @@ grid_check(uint16_t* grid)
   /* reach every position */
   for(position = 0; position < (nb_color-1) * (nb_color); ++position)
     {
-      while(grid[position]==0xFF && (nb_color-1) * nb_color )
+      while(grid[position]==0xFF && position<(nb_color-1) * nb_color )
 	{
 	  position++;
 	}
       color = grid[position];
+      if(position>=nb_color*nb_color)
+	return 1;
       /* checking columns */
       tmp_pos = position % nb_color;
       for(; tmp_pos < nb_color * nb_color; tmp_pos = tmp_pos+nb_color)
@@ -145,8 +147,7 @@ ordonnanceur(uint16_t* grid)
   pthread_attr_t new_attr;
   pthread_mutex_t verrou;
  
-  assert(grid_check(grid));
-  
+  if(grid_check(grid)){
   pthread_attr_init(&new_attr);
   pthread_attr_setschedpolicy(&new_attr,SCHED_RR);
 
@@ -159,12 +160,13 @@ ordonnanceur(uint16_t* grid)
   while(is_change!=0)
     {
       tmp=PopFront(&My_stack);
-       pthread_mutex_lock (&verrou);      
+      pthread_mutex_lock (&verrou);      
       pthread_create (&tmp, &new_attr,max_solver, grid);
       pthread_join(tmp, NULL);
       pthread_mutex_unlock (&verrou);      
       PushBack(&My_stack,tmp);
     }
+  }
 }
 
 void* max_solver(void* test)
