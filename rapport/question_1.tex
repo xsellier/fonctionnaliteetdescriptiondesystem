@@ -1,0 +1,86 @@
+
+\section{Question 1}
+
+$\exists$ p, q $\in$ P, ( G(p) = G(q) $\wedge$ q $\neq$ p )
+
+Montrons que si ( G(p) = G(q) $\wedge$ q $\neq$ p ) $\Rightarrow$ q $\neg \sim_{l}$ p par l'absurde.
+
+\begin{itemize}
+\item On suppose que q $\sim_{l}$ p :
+	\begin{itemize}
+	\item p = ($i_p$; $j_p$) et q = ($i_q$; $j_q$)\\
+	D'apr\`es $\sim_{l}$  on a :
+		\begin{itemize}
+		\item G(p) = G(q)
+		\item $\underbrace{(i_p; j_p) \sim_{l} (i_q; j_q) \Rightarrow i_p = i_q}$\\
+		$j_p$ = $j_q$ d'apr\`es l'\'enonc\'e.\\
+		On en d\'eduit que q = p, ce qui contredit nos hypoth\`eses. \\
+		Donc p ne peut pas etre en relation $\sim_{l}$ avec q.
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\bigskip 
+Montrons que si ( G(p) = G(q) $\wedge$ q $\neq$ p ) $\Rightarrow$ q $\neg \sim_{c}$ p par l'absurde.
+
+\begin{itemize}
+\item On suppose que q $\sim_{c}$ p :
+	\begin{itemize}
+	\item p = ($i_p$; $j_p$) et q = ($i_q$; $j_q$)\\
+	D'apr\`es $\sim_{c}$  on a :
+		\begin{itemize}
+		\item G(p) = G(q)
+		\item $\underbrace{(i_p; j_p) \sim_{l} (i_q; j_q) \Rightarrow j_p = j_q}$\\
+		$i_p$ = $i_q$ d'apr\`es l'\'enonc\'e.\\
+		On en d\'eduit que q = p, ce qui contredit nos hypoth\`eses. \\
+		Donc p ne peut pas etre en relation $\sim_{c}$ avec q.
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+
+\bigskip
+Montrons que si ( G(p) = G(q) $\wedge$ q $\neq$ p ) $\Rightarrow$ q $\neg \sim_{b}$ p par l'absurde.\\
+D'apr\`es les r\`egles pr\'ec\'edentes on a $i_p$ $\neq$ $i_q$ et $j_p$ $\neq$ $j_q$. Mais vu que p et q se trouvent dans le m\^eme carr\'e on a :\\
+0 $\leq$ | $i_q$ - $i_p$ | < d et\\
+0 $\leq$ | $j_q$ - $j_p$ | < d\\
+
+$\exists$ r, s $\in$ [0, d-1] tels que :\\
+$$
+\left\{
+    \begin{array}{ll}
+        r \times d \leq i_p, i_q < (r + 1) \times d\\
+        s \times d \leq j_p, j_q < (r + 1) \times d
+    \end{array}
+\right.
+$$
+
+donc 
+
+$$
+\left\{
+    \begin{array}{llll}
+        r \times d \leq i_p < d^2, 0 \leq i_q < (r + 1) \times d\\
+        s \times d \leq j_p < d^2, 0 \leq j_q < (s + 1) \times d\\
+        0 \leq | i_q - i_p | < d\\
+		0 \leq | j_q - j_p | < d
+    \end{array}
+\right.
+$$
+
+\bigskip
+D'ap\`es les r\`egles de math\'ematiques vues en seconde on obtient :\\
+$$
+\left\{
+    \begin{array}{llll}
+        r \times d \leq i_p < d^2, 0 \leq i_q < (r + 1) \times d\\
+        s \times d \leq j_p < d^2, 0 \leq j_q < (s + 1) \times d\\
+        0 \leq | i_q - i_p | \leq 0 $ $ (car $ $ d^2 - (r + 1) \times d \leq 0 )\\
+		0 \leq | j_q - j_p | \leq 0 $ $ (car $ $ d^2 - (s + 1) \times d \leq 0 )
+    \end{array}
+\right.
+$$
+
+\bigskip
+On en d\'eduit que $i_p$ = $i_q$ et que $j_p$ = $j_q$ ce qui implique que p = q.\\
+Ce qui contredit nos hypoth\`eses. Donc p ne peut pas etre en relation $\sim_{b}$ avec q.
