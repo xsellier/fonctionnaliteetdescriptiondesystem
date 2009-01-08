@@ -112,9 +112,14 @@ search_color(bool* c_available, uint16_t position, uint16_t* grid)
   tmp_pos = position % nb_color;
   for(; tmp_pos < nb_color * nb_color; tmp_pos = tmp_pos+nb_color)
         {
-          if(grid[tmp_pos]!= 0xFF)
-	    c_available[(grid[tmp_pos]-48)]=0;
-        }
+          if(grid[tmp_pos]!= 0xFF){
+	    if(grid[tmp_pos]>57)
+	      c_available[(grid[tmp_pos]-65)]=0;
+	     else
+	      c_available[(grid[tmp_pos]-48)]=0;
+	    
+	  }
+	}
   
   /* filling line */
   tmp_pos = position;
@@ -123,8 +128,13 @@ search_color(bool* c_available, uint16_t position, uint16_t* grid)
   tmp = tmp_pos;
   for(; tmp_pos < tmp + nb_color; ++tmp_pos)
     {
-          if(grid[tmp_pos]!= 0xFF)
-	    c_available[(grid[tmp_pos]-48)]=0;
+      if(grid[tmp_pos]!= 0xFF){
+	if(grid[tmp_pos]>57){
+	  c_available[(grid[tmp_pos]-65)]=0;
+	} else{
+	  c_available[(grid[tmp_pos]-48)]=0;
+	}
+      }
     }
   
   /* filling blocks */
@@ -133,9 +143,13 @@ search_color(bool* c_available, uint16_t position, uint16_t* grid)
     tmp_pos--;
   do
     {
-      if(grid[tmp_pos]!= 0xFF)
-	c_available[(grid[tmp_pos]-48)]=0;
-      
+      if(grid[tmp_pos]!= 0xFF){
+	if(grid[tmp_pos]>57){
+	  c_available[(grid[tmp_pos]-65)]=0;
+	} else{
+	  c_available[(grid[tmp_pos]-48)]=0;
+	}
+      }
       ++tmp_pos;
       if(tmp_pos % d == 0)
 	tmp_pos = tmp_pos + nb_color - d;
@@ -151,6 +165,7 @@ sudoku(uint16_t* grid_old)
   bool complete=true;
   uint16_t* grid = malloc(nb_color*nb_color*sizeof(uint16_t));
   grid_cpy_invert(grid,grid_old);
+       print_grid(grid);
   if(grid_check(grid)){ 
     ordonnanceur(grid);
     for(i=0;i<nb_color*nb_color;++i)
@@ -163,13 +178,15 @@ sudoku(uint16_t* grid_old)
     else 
       {
 	pos=0;
-	while(grid[pos]!=0xFF && pos<(nb_color)*nb_color)
+	while(grid[pos]!=0xFF && pos<nb_color*nb_color-1)
 	  pos++;
 	search_color(c,pos,grid);
 	for(i=0;i<nb_color;++i){
 	  if(c[i]){
-	    printf("i+48 = %c\n",i);
-	    grid[pos]=i+48;
+	    if(i+48>57)
+	      grid[pos]=i+65;
+	    else
+	      grid[pos]=i+48;
 	    sudoku(grid);
 	  }
 	}
