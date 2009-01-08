@@ -8,10 +8,29 @@
 #include <ctype.h>
 #include <pthread.h>
 #include <stdbool.h>
+#include <assert.h>
 
 extern int nb_color;
 extern int grid_size;
 extern uint16_t *grid;
+
+typedef struct elem
+{
+  pthread_t fred; /* it is an english pronnonciation for thread by
+		     O. BAUDON ;-) */
+  struct elem *prev;
+  struct elem *next;
+} elem ;
+
+typedef struct
+{
+  elem *first;
+  elem *last;
+}stack;
+
+uint16_t position = 0;
+
+stack My_stack;
 
 bool is_change=1;
 
