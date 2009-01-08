@@ -5,6 +5,7 @@
 #include <math.h>
 #include <stdint.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 int nb_color = 0;
 int grid_size = 10;
