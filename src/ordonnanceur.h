@@ -14,7 +14,7 @@
 
 extern int nb_color;
 extern int grid_size;
-extern uint16_t *grid;
+extern uint16_t *grid2;
 
 typedef struct elem
 {
@@ -34,11 +34,11 @@ uint16_t position = 0;
 stack My_stack;
 bool is_change=1;
 
-uint16_t search_next_position(uint16_t position);
+uint16_t search_next_position(uint16_t position,uint16_t* grid);
 
-bool grid_check();
+bool grid_check(uint16_t* grid);
 
-void ordonnanceur();
+void ordonnanceur(uint16_t* grid);
 
 void* max_solver(void* test);
 

@@ -36,7 +36,18 @@ grid_cpy(uint16_t* tmp_grid)
   int loop = nb_color*nb_color;
   for(i=0;i<=loop;++i)
     {
-      grid[i]=tmp_grid[i];
+      grid2[i]=tmp_grid[i];
+    }
+}
+
+void
+grid_cpy_invert(uint16_t* tmp_grid)
+{
+  int i;
+  int loop = nb_color*nb_color;
+  for(i=0;i<=loop;++i)
+    {
+      tmp_grid[i]=grid2[i];
     }
 }
 
@@ -69,18 +80,42 @@ parsing(char *file)
     }
   
   fclose(my_file);
-  grid = malloc(nb_color+1 * sizeof(uint16_t));
+  grid2 = malloc(nb_color+1 * sizeof(uint16_t));
   nb_color = sqrt(nb_color/2);
   grid_cpy(tmp_grid);
 }
  
+int
 main(int argc, char **argv) 
 { 
+  uint16_t* grid=NULL;
   parsing(argv[1]);
-
-  ordonnanceur();
-
+  grid = malloc(nb_color*nb_color * sizeof(uint16_t));
+  sudoku(grid);
+  grid_cpy_invert(grid);
   print_grid(grid);
-
   return EXIT_SUCCESS;
 }
+
+void
+sudoku(uint16_t* grid)
+{
+  int i;
+  bool complete=true;
+  ordonnanceur(grid);
+
+  for(i=0;i<nb_color*nb_color;++i)
+    {
+      if(grid[i]==0xFF)
+	complete=false;
+    }
+  if(complete)
+      print_grid(grid);
+  else 
+    {
+      
+
+    }
+  
+}
+

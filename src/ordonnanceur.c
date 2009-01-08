@@ -73,7 +73,7 @@ pthread_t PopFront(stack *l)
 }
 
 uint16_t
-search_next_position(uint16_t position)
+search_next_position(uint16_t position, uint16_t* grid)
 {
   uint16_t i=position;
   for(;i<=nb_color*nb_color;++i)
@@ -85,7 +85,7 @@ search_next_position(uint16_t position)
 }
  
 bool
-grid_check()
+grid_check(uint16_t* grid)
 {
   uint16_t d = sqrt(nb_color);
   uint16_t position = 0;
@@ -137,7 +137,7 @@ grid_check()
 }
 
 void
-ordonnanceur()
+ordonnanceur(uint16_t* grid)
 {
   int i;
   pthread_t* thread = malloc(nb_color*sizeof(pthread_t));
@@ -145,7 +145,7 @@ ordonnanceur()
   pthread_attr_t new_attr;
   pthread_mutex_t verrou;
 
-  assert(grid_check());
+  assert(grid_check(grid));
   
   pthread_attr_init(&new_attr);
   pthread_attr_setschedpolicy(&new_attr,SCHED_RR);
@@ -161,16 +161,15 @@ ordonnanceur()
     {
       tmp=PopFront(&My_stack);
 
-      /*      pthread_mutex_lock (&verrou);      */
-      pthread_create (&tmp, &new_attr,max_solver, NULL);
+      pthread_mutex_lock (&verrou);      
+      pthread_create (&tmp, &new_attr,max_solver, &grid);
 
       pthread_join(tmp, NULL);
-      /*      pthread_mutex_unlock (&verrou);*/
+      pthread_mutex_unlock (&verrou);
 
       PushBack(&My_stack,tmp);
       
     }
-  
 }
 
 void* max_solver(void* test)
@@ -182,7 +181,8 @@ void* max_solver(void* test)
   int nb_available = 0;
   uint16_t i;
   bool* c_available = malloc(nb_color * sizeof(bool));
-
+  uint16_t* grid = (uint16_t *)&test;
+  
   is_change=0;
   
   for(position = 0; position < (nb_color-1) * (nb_color); ++position)
