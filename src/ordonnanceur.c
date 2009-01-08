@@ -195,9 +195,12 @@ void* max_solver(void* test)
       tmp_pos = position % nb_color;
       for(; tmp_pos < nb_color * nb_color; tmp_pos = tmp_pos+nb_color)
         {
-          if(grid[tmp_pos]!= 0xFF)
+         if(grid[tmp_pos]!= 0xFF){
+	    if(grid[tmp_pos]> 57)
+	      c_available[(grid[tmp_pos]-65)]=0;
+	    else
               c_available[(grid[tmp_pos]-48)]=0;
-         
+	  }
         }
      
       /* filling line */
@@ -207,8 +210,12 @@ void* max_solver(void* test)
       tmp = tmp_pos;
       for(; tmp_pos < tmp + nb_color; ++tmp_pos)
         {
-          if(grid[tmp_pos]!= 0xFF)
+          if(grid[tmp_pos]!= 0xFF){
+	    if(grid[tmp_pos]> 57)
+	      c_available[(grid[tmp_pos]-65)]=0;
+	    else
               c_available[(grid[tmp_pos]-48)]=0;
+	  }
         }
      
       /* filling blocks */
@@ -217,9 +224,12 @@ void* max_solver(void* test)
         tmp_pos--;
       do
         {
-          if(grid[tmp_pos]!= 0xFF)
+          if(grid[tmp_pos]!= 0xFF){
+	    if(grid[tmp_pos]> 57)
+	      c_available[(grid[tmp_pos]-65)]=0;
+	    else
               c_available[(grid[tmp_pos]-48)]=0;
-     
+	  }
           ++tmp_pos;
           if(tmp_pos % d == 0)
             tmp_pos = tmp_pos + nb_color - d;
@@ -237,8 +247,11 @@ void* max_solver(void* test)
         }
       if(nb_available==1)
         {
-          is_change=1;  
-          grid[position]=(tmp+48);
+          is_change=1;
+	    if(tmp+48>57)
+	      grid[position]=tmp+65;
+	    else
+	      grid[position]=tmp+48;
         }
     }
   return test;
