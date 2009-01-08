@@ -14,6 +14,8 @@ uint16_t *grid2=NULL;
 
 void ordonnanceur(uint16_t* grid);
 
+bool grid_check(uint16_t* grid);
+
 void
 sudoku(uint16_t* grid);
 
@@ -27,7 +29,7 @@ void
 grid_cpy(uint16_t* tmp_grid);
 
 void
-grid_cpy_invert(uint16_t* tmp_grid);
+grid_cpy_invert(uint16_t* tmp_grid, uint16_t* tmp_grid2);
 
 void
 parsing(char *file);
