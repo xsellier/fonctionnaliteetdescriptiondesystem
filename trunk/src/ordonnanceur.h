@@ -9,6 +9,8 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <stdio.h> 
+#include <fcntl.h>
 
 extern int nb_color;
 extern int grid_size;
@@ -29,9 +31,7 @@ typedef struct
 }stack;
 
 uint16_t position = 0;
-
 stack My_stack;
-
 bool is_change=1;
 
 uint16_t search_next_position(uint16_t position);

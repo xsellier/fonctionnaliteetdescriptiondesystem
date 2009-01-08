@@ -11,6 +11,8 @@ int nb_color = 0;
 int grid_size = 10;
 uint16_t *grid=NULL;
 
+void ordonnanceur();
+
 void
 fill_grid(uint16_t color, uint16_t* tmp_grid, int position);
 

@@ -27,7 +27,6 @@ print_grid(uint16_t *grid)
       if((i+1)%nb_color==0 && i!=0)
 	printf("\n");
     }
-  printf("nombre de couleurs : %d\n",nb_color);
 }
 
 void
@@ -74,18 +73,13 @@ parsing(char *file)
   nb_color = sqrt(nb_color/2);
   grid_cpy(tmp_grid);
 }
-
-int 
+ 
 main(int argc, char **argv) 
 { 
   parsing(argv[1]);
 
-  print_grid(grid);
-
-  printf("La grille est valide %d\n",grid_check());
-  
   ordonnanceur();
-  
+
   print_grid(grid);
 
   return EXIT_SUCCESS;
