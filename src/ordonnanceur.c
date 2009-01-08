@@ -144,7 +144,7 @@ ordonnanceur(uint16_t* grid)
   pthread_t tmp;
   pthread_attr_t new_attr;
   pthread_mutex_t verrou;
-
+ 
   assert(grid_check(grid));
   
   pthread_attr_init(&new_attr);
@@ -156,19 +156,14 @@ ordonnanceur(uint16_t* grid)
   
   for(i=0;i<nb_color;++i)
       PushBack(&My_stack,thread[i]);
-  
   while(is_change!=0)
     {
       tmp=PopFront(&My_stack);
-
-      pthread_mutex_lock (&verrou);      
-      pthread_create (&tmp, &new_attr,max_solver, &grid);
-
+       pthread_mutex_lock (&verrou);      
+      pthread_create (&tmp, &new_attr,max_solver, grid);
       pthread_join(tmp, NULL);
-      pthread_mutex_unlock (&verrou);
-
+      pthread_mutex_unlock (&verrou);      
       PushBack(&My_stack,tmp);
-      
     }
 }
 
@@ -181,7 +176,7 @@ void* max_solver(void* test)
   int nb_available = 0;
   uint16_t i;
   bool* c_available = malloc(nb_color * sizeof(bool));
-  uint16_t* grid = (uint16_t *)&test;
+  uint16_t* grid = (uint16_t *)test;
   
   is_change=0;
   

@@ -34,6 +34,8 @@ uint16_t position = 0;
 stack My_stack;
 bool is_change=1;
 
+void print_grid(uint16_t* grid);
+
 uint16_t search_next_position(uint16_t position,uint16_t* grid);
 
 bool grid_check(uint16_t* grid);

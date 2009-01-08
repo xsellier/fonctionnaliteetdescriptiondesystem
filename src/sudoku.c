@@ -91,9 +91,8 @@ main(int argc, char **argv)
   uint16_t* grid=NULL;
   parsing(argv[1]);
   grid = malloc(nb_color*nb_color * sizeof(uint16_t));
-  sudoku(grid);
   grid_cpy_invert(grid);
-  print_grid(grid);
+  sudoku(grid);
   return EXIT_SUCCESS;
 }
 
