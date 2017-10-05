@@ -26,7 +26,7 @@ all: $(CIBLES)
 
 .PHONY: clean
 clean:
-	rm -f *.o
+	rm -f *.o $(CIBLES)
 
 .PHONY: dep
 dep:
