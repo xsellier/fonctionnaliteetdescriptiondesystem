@@ -2,7 +2,7 @@
 
 void fill_grid(uint16_t color, uint16_t* tmp_grid, int position) {
   if (isxdigit(color)) {
-      tmp_grid[position] = color;
+      tmp_grid[position] = color - 1;
   } else {
     if (color == '_') {
 	    *(tmp_grid + position) = 0xFF;
