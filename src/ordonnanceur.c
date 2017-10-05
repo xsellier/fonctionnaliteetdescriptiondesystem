@@ -107,7 +107,7 @@ bool grid_check(uint16_t* grid) {
     tmp_pos = position % nb_color;
 
     for (; tmp_pos < nb_color * nb_color; tmp_pos = tmp_pos + nb_color) {
-	    if (grid[tmp_pos] == color && grid[tmp_pos]!= 0xFF && tmp_pos != position) {
+	    if (grid[tmp_pos] == color && grid[tmp_pos] != 0xFF && tmp_pos != position) {
         return false;
       }
 	  }
@@ -120,7 +120,7 @@ bool grid_check(uint16_t* grid) {
 
     tmp = tmp_pos;
     for(; tmp_pos < (tmp + nb_color); ++tmp_pos) {
-      if(grid[tmp_pos] == color && grid[tmp_pos]!= 0xFF && tmp_pos != position) {
+      if(grid[tmp_pos] == color && grid[tmp_pos] != 0xFF && tmp_pos != position) {
         return false;
       }
 	  }
@@ -128,7 +128,7 @@ bool grid_check(uint16_t* grid) {
     /* checking blocks */
     tmp_pos = position;
 
-    while(tmp_pos%d!=0) {
+    while ((tmp_pos % d) != 0) {
       tmp_pos--;
     }
 
@@ -193,84 +193,88 @@ void* max_solver(void* test) {
   is_change=0;
   
   for (position = 0; position < (nb_color-1) * (nb_color); ++position) {
-      for (index = 0x00; index < nb_color; ++index) {
-        c_available[index] = 0x01;
-      }
-     
-      while (grid[position] != 0xFF && position < ((nb_color-1) * nb_color)) {
-        position++;
-      }
+    for (index = 0x00; index < nb_color; ++index) {
+      c_available[index] = 0x01;
+    }
+    
+    while (grid[position] != 0xFF && position < ((nb_color-1) * nb_color)) {
+      position++;
+    }
 
-      /* filling columns */
-      tmp_pos = position % nb_color;
+    /* filling columns */
+    tmp_pos = position % nb_color;
 
-      for (; tmp_pos < nb_color * nb_color; tmp_pos = tmp_pos + nb_color) {
-        if (grid[tmp_pos] != 0xFF) {
-	        if(grid[tmp_pos]> 57) {
-            c_available[(grid[tmp_pos]-65)]=0;
-          } else {
-            c_available[(grid[tmp_pos]-48)]=0;
-          }
-        }
-      }
-     
-      /* filling line */
-      tmp_pos = position;
-      while(tmp_pos%nb_color!=0) {
-        tmp_pos--;
-      }
-
-      tmp = tmp_pos;
-
-      for (; tmp_pos < tmp + nb_color; ++tmp_pos) {
-        if (grid[tmp_pos]!= 0xFF) {
-	        if (grid[tmp_pos]> 57) {
-            c_available[(grid[tmp_pos]-65)]=0;
-          } else {
-            c_available[(grid[tmp_pos]-48)]=0;
-          }
-        }
-      }
-     
-      /* filling blocks */
-      tmp_pos = position;
-      while (tmp_pos % d != 0) {
-        tmp_pos--;
-      }
-
-      do {
-        if (grid[tmp_pos]!= 0xFF) {
-	        if(grid[tmp_pos]> 57) {
-	          c_available[(grid[tmp_pos]-65)]=0;
-          } else {
-            c_available[(grid[tmp_pos]-48)]=0;
-          }
-        }
-        ++tmp_pos;
-
-        if(tmp_pos % d == 0) {
-          tmp_pos = tmp_pos + nb_color - d;
-        }
-      } while (tmp_pos < (d * nb_color));
-     
-      /* filling grid */
-      nb_available = 0;
-      for (index = 0x00; index < nb_color; ++index) {
-        if (c_available[index] == 1) {
-          tmp = index;
-          nb_available++;
-        }
-      }
-
-      if (nb_available == 1) {
-        is_change = 1;
-
-	      if (tmp + 48 > 57) {
-	        grid[position] = tmp + 65;
+    for (; tmp_pos < (nb_color * nb_color); tmp_pos = tmp_pos + nb_color) {
+      if (grid[tmp_pos] != 0xFF) {
+        if(grid[tmp_pos]> 57) {
+          c_available[(grid[tmp_pos]-65)] = 0;
         } else {
-	        grid[position] = tmp + 48;
+          c_available[(grid[tmp_pos]-48)] = 0;
         }
       }
     }
+    
+    /* filling line */
+    tmp_pos = position;
+
+    while ((tmp_pos % nb_color) != 0) {
+      tmp_pos--;
+    }
+
+    tmp = tmp_pos;
+
+    for (; tmp_pos < tmp + nb_color; ++tmp_pos) {
+      if (grid[tmp_pos]!= 0xFF) {
+        if (grid[tmp_pos]> 57) {
+          c_available[(grid[tmp_pos]-65)] = 0;
+        } else {
+          c_available[(grid[tmp_pos]-48)] = 0;
+        }
+      }
+    }
+    
+    /* filling blocks */
+    tmp_pos = position;
+
+    while (tmp_pos % d != 0) {
+      tmp_pos--;
+    }
+
+    do {
+      if (grid[tmp_pos] != 0xFF) {
+        if(grid[tmp_pos] > 57) {
+          c_available[(grid[tmp_pos]-65)] = 0;
+        } else {
+          c_available[(grid[tmp_pos]-48)] = 0;
+        }
+      }
+
+      ++tmp_pos;
+
+      if (tmp_pos % d == 0) {
+        tmp_pos = tmp_pos + nb_color - d;
+      }
+    } while (tmp_pos < (d * nb_color));
+    
+    /* filling grid */
+    nb_available = 0;
+    for (index = 0x00; index < nb_color; ++index) {
+      if (c_available[index] == 1) {
+        tmp = index;
+        nb_available++;
+      }
+    }
+
+    if (nb_available == 1) {
+      is_change = 1;
+
+      if ((tmp + 48) > 57) {
+        grid[position] = tmp + 65;
+      } else {
+        grid[position] = tmp + 48;
+      }
+    }
+  }
+
   return test;
 }

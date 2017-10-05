@@ -15,7 +15,7 @@ void print_grid(uint16_t *grid) {
   int index;
 
   for (index = 0; index <= loop; ++index) {
-    printf("%c ",grid[index]);
+    printf("%c ",grid[index] + 1);
 
     if((index+1)%nb_color==0 && index!=0) {
       printf("\n");
@@ -83,7 +83,7 @@ void parsing(char *file) {
   fclose(my_file);
 
   grid2 = malloc(nb_color + 1 * sizeof(uint16_t));
-  nb_color = sqrt(nb_color/2);
+  nb_color = sqrt(nb_color / 2);
 
   grid_cpy(tmp_grid);
 }
@@ -100,6 +100,8 @@ main(int argc, char **argv)
   uint16_t* grid = NULL;
 
   parsing(argv[1]);
+
+  print_grid(grid2);
 
   printf("Detected size of the grid: %i\n", nb_color);
 
@@ -185,7 +187,6 @@ void sudoku(uint16_t* grid_old) {
   uint16_t* grid = malloc(nb_color*nb_color*sizeof(uint16_t));
 
   grid_cpy_invert(grid,grid_old);
-  print_grid(grid);
 
   if (grid_check(grid)) {
     ordonnanceur(grid);
